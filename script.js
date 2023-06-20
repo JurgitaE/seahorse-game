@@ -7,14 +7,6 @@ window.addEventListener('load', function () {
     canvas.width = 500;
     canvas.height = 500;
 
-    class Projectile {}
-    class Particle {}
-
-    class Enemy {}
-    class Layer {}
-    class Background {}
-    class UI {}
-
     const game = new Game(canvas.width, canvas.height);
     // animation loop
     function animate() {
