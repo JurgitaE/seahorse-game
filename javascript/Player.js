@@ -22,7 +22,7 @@ class Player {
         this.y += this.speedY;
         // handle Projectile
         this.projectiles.forEach(el => el.update());
-        this.projectiles.filter(el => !el.markedForDeletion);
+        this.projectiles = this.projectiles.filter(el => !el.markedForDeletion);
     }
     draw(context) {
         context.fillStyle = 'black';
@@ -30,8 +30,10 @@ class Player {
         this.projectiles.forEach(el => el.draw(context));
     }
     shootTop() {
-        this.projectiles.push(new Projectile(this.game, this.x, this.y));
-        console.log(this.projectiles);
+        if (this.game.ammo > 0) {
+            this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 30));
+            this.game.ammo--;
+        }
     }
 }
 
