@@ -1,5 +1,6 @@
 import InputHandler from './InputHandler.js';
 import Player from './Player.js';
+import UI from './UI.js';
 
 class Game {
     constructor(width, height) {
@@ -7,6 +8,7 @@ class Game {
         this.height = height;
         this.player = new Player(this);
         this.input = new InputHandler(this);
+        this.ui = new UI(this);
         this.keys = [];
         this.ammo = 20;
         this.maxAmmo = 50;
@@ -26,6 +28,7 @@ class Game {
     }
     draw(context) {
         this.player.draw(context);
+        this.ui.draw(context);
     }
 }
 
