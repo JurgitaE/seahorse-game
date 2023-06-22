@@ -30,7 +30,22 @@ class Game {
         } else {
             this.ammoTimer += deltaTime;
         }
-        this.enemies.forEach(enemy => enemy.update());
+        this.enemies.forEach(enemy => {
+            enemy.update();
+            if (this.isColliding(this.player, enemy)) {
+                enemy.markedForDeletion = true;
+            }
+            this.player.projectiles.forEach(projectile => {
+                if (this.isColliding(projectile, enemy)) {
+                    enemy.lives--;
+                    projectile.markedForDeletion = true;
+                    if (enemy.lives <= 0) {
+                        enemy.markedForDeletion = true;
+                        this.score += enemy.score;
+                    }
+                }
+            });
+        });
         this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
             this.addEnemy();
@@ -47,6 +62,14 @@ class Game {
     addEnemy() {
         this.enemies.push(new Angler1(this));
         console.log(this.enemies);
+    }
+    isColliding(rect1, rect2) {
+        return (
+            rect1.x < rect2.x + rect2.width &&
+            rect1.x + rect1.width > rect2.x &&
+            rect1.y < rect2.y + rect2.height &&
+            rect1.y + rect1.height > rect2.y
+        );
     }
 }
 
