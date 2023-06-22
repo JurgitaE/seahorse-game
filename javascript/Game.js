@@ -1,3 +1,4 @@
+import Background from './Background.js';
 import { Angler1 } from './Enemy.js';
 import InputHandler from './InputHandler.js';
 import Player from './Player.js';
@@ -10,6 +11,7 @@ class Game {
         this.player = new Player(this);
         this.input = new InputHandler(this);
         this.ui = new UI(this);
+        this.background = new Background(this);
         this.keys = [];
         this.enemies = [];
         this.enemyTimer = 0;
@@ -23,6 +25,7 @@ class Game {
         this.winningScore = 10;
         this.gameTime = 0;
         this.timeLimit = 15000;
+        this.speed = 0.3; //adjusted from 1
     }
     update(deltaTime) {
         if (!this.gameOver) this.gameTime += deltaTime;
@@ -30,6 +33,7 @@ class Game {
             this.gameOver = true;
         }
 
+        this.background.update();
         this.player.update();
         if (this.ammoTimer > this.ammoInterval) {
             if (this.ammo < this.maxAmmo) {
@@ -69,6 +73,7 @@ class Game {
         }
     }
     draw(context) {
+        this.background.draw(context);
         this.player.draw(context);
         this.ui.draw(context);
         this.enemies.forEach(enemy => enemy.draw(context));
