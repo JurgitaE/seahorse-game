@@ -19,6 +19,8 @@ class Game {
         this.ammoTimer = 0;
         this.ammoInterval = 500;
         this.gameOver = false;
+        this.score = 0;
+        this.winningScore = 10;
     }
     update(deltaTime) {
         this.player.update();
@@ -42,6 +44,9 @@ class Game {
                     if (enemy.lives <= 0) {
                         enemy.markedForDeletion = true;
                         this.score += enemy.score;
+                        if (this.score > this.winningScore) {
+                            this.gameOver = true;
+                        }
                     }
                 }
             });
@@ -61,7 +66,7 @@ class Game {
     }
     addEnemy() {
         this.enemies.push(new Angler1(this));
-        console.log(this.enemies);
+        // console.log(this.enemies);
     }
     isColliding(rect1, rect2) {
         return (
