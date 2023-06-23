@@ -25,6 +25,7 @@ class Game {
         this.winningScore = 10;
         this.gameTime = 0;
         this.timeLimit = 15000;
+        this.debug = false;
         // FYI djusted from 1 due to higher fps
         this.speed = 0.3;
     }
