@@ -25,7 +25,8 @@ class Game {
         this.winningScore = 10;
         this.gameTime = 0;
         this.timeLimit = 15000;
-        this.speed = 0.3; //adjusted from 1
+        // FYI djusted from 1 due to higher fps
+        this.speed = 0.3;
     }
     update(deltaTime) {
         if (!this.gameOver) this.gameTime += deltaTime;
@@ -34,6 +35,7 @@ class Game {
         }
 
         this.background.update();
+        this.background.layer4.update();
         this.player.update();
         if (this.ammoTimer > this.ammoInterval) {
             if (this.ammo < this.maxAmmo) {
@@ -77,6 +79,7 @@ class Game {
         this.player.draw(context);
         this.ui.draw(context);
         this.enemies.forEach(enemy => enemy.draw(context));
+        this.background.layer4.draw(context);
     }
     addEnemy() {
         this.enemies.push(new Angler1(this));
