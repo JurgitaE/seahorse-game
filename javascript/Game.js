@@ -1,5 +1,5 @@
 import Background from './Background.js';
-import { Angler1 } from './Enemy.js';
+import { Angler1, Angler2, LuckyFish } from './Enemy.js';
 import InputHandler from './InputHandler.js';
 import Player from './Player.js';
 import UI from './UI.js';
@@ -37,7 +37,7 @@ class Game {
 
         this.background.update();
         this.background.layer4.update();
-        this.player.update();
+        this.player.update(deltaTime);
         if (this.ammoTimer > this.ammoInterval) {
             if (this.ammo < this.maxAmmo) {
                 this.ammo++;
@@ -50,6 +50,11 @@ class Game {
             enemy.update();
             if (this.isColliding(this.player, enemy)) {
                 enemy.markedForDeletion = true;
+                if (enemy.type === 'lucky') {
+                    this.player.enterPowerUp();
+                } else {
+                    this.score--;
+                }
             }
             this.player.projectiles.forEach(projectile => {
                 if (this.isColliding(projectile, enemy)) {
@@ -83,7 +88,14 @@ class Game {
         this.background.layer4.draw(context);
     }
     addEnemy() {
-        this.enemies.push(new Angler1(this));
+        const randomize = Math.random();
+        if (randomize < 0.3) {
+            this.enemies.push(new Angler1(this));
+        } else if (randomize < 0.6) {
+            this.enemies.push(new Angler2(this));
+        } else {
+            this.enemies.push(new LuckyFish(this));
+        }
         // console.log(this.enemies);
     }
     isColliding(rect1, rect2) {
