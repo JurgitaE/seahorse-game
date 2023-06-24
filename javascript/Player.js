@@ -14,11 +14,14 @@ class Player {
         this.maxSpeed = 2;
         this.projectiles = [];
         this.image = document.getElementById('player');
+        this.powerUp = false;
+        this.powerUpTimer = 0;
+        this.powerUpLimit = 10000;
         // FYI due to higher fps - had to adjust frameX
         this.frameXAccum = 0;
         this.frameFlipSpeed = 0.25;
     }
-    update() {
+    update(deltaTime) {
         if (this.game.keys.includes('ArrowUp')) {
             this.speedY = -this.maxSpeed;
         } else if (this.game.keys.includes('ArrowDown')) {
@@ -38,6 +41,20 @@ class Player {
         } else {
             this.frameX = 0;
             this.frameXAccum = 0;
+        }
+        // power Up
+        if (this.powerUp) {
+            if (this.powerUpTimer > this.powerUpLimit) {
+                this.powerUpTimer = 0;
+                this.powerUp = false;
+                this.frameY = 0;
+            } else {
+                this.powerUpTimer += deltaTime;
+                this.frameY = 1;
+
+                // FYI adjusted for higher flips per second (/2)
+                this.game.ammo += 0.1 / 2;
+            }
         }
     }
     draw(context) {
@@ -60,6 +77,11 @@ class Player {
             this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 30));
             this.game.ammo--;
         }
+    }
+    enterPowerUp() {
+        this.powerUpTimer = 0;
+        this.powerUp = true;
+        this.game.ammo = this.game.maxAmmo;
     }
 }
 
