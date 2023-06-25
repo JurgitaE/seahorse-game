@@ -14,10 +14,7 @@ class UI {
         context.font = `${this.fontSize}px ${this.fontFamily}`;
         // score
         context.fillText(`Score: ${this.game.score}`, 20, 40);
-        // ammo
-        for (let i = 0; i < this.game.ammo; i++) {
-            context.fillRect(20 + 5 * i, 50, 3, 20);
-        }
+
         // Timer
         const formattedTime = this.game.gameTime / 1000;
         context.fillText(`Timer: ${formattedTime.toFixed(1)}`, 20, 100);
@@ -37,6 +34,13 @@ class UI {
             context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
             context.font = `25px ${this.fontFamily}`;
             context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 40);
+        }
+        // ammo
+        if (this.game.player.powerUp) {
+            context.fillStyle = '#ffffbf';
+        }
+        for (let i = 0; i < this.game.ammo; i++) {
+            context.fillRect(20 + 5 * i, 50, 3, 20);
         }
         context.restore();
     }

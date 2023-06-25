@@ -59,6 +59,7 @@ class Player {
     }
     draw(context) {
         if (this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);
+        this.projectiles.forEach(el => el.draw(context));
         context.drawImage(
             this.image,
             this.frameX * this.width,
@@ -70,14 +71,20 @@ class Player {
             this.width,
             this.height
         );
-        this.projectiles.forEach(el => el.draw(context));
     }
     shootTop() {
         if (this.game.ammo > 0) {
             this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 30));
             this.game.ammo--;
         }
+        if (this.powerUp) this.shootBottom();
     }
+    shootBottom() {
+        if (this.game.ammo > 0) {
+            this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 175));
+        }
+    }
+
     enterPowerUp() {
         this.powerUpTimer = 0;
         this.powerUp = true;
