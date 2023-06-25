@@ -83,9 +83,9 @@ class Game {
     draw(context) {
         this.background.draw(context);
         this.player.draw(context);
-        this.ui.draw(context);
         this.enemies.forEach(enemy => enemy.draw(context));
         this.background.layer4.draw(context);
+        this.ui.draw(context);
     }
     addEnemy() {
         const randomize = Math.random();

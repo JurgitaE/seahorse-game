@@ -2,7 +2,7 @@ class UI {
     constructor(game) {
         this.game = game;
         this.fontSize = 25;
-        this.fontFamily = 'Helvetica';
+        this.fontFamily = 'Bangers';
         this.color = 'white';
     }
     draw(context) {
@@ -24,16 +24,16 @@ class UI {
             let message1;
             let message2;
             if (this.game.score > this.game.winningScore) {
-                message1 = 'You win!';
-                message2 = 'Well done!';
+                message1 = 'Most Wondrows!';
+                message2 = 'Well done explorer!';
             } else {
-                message1 = 'You lose!';
+                message1 = 'Blazes!';
                 message2 = 'Try again.';
             }
-            context.font = `50px ${this.fontFamily}`;
-            context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
+            context.font = `70px ${this.fontFamily}`;
+            context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 20);
             context.font = `25px ${this.fontFamily}`;
-            context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 40);
+            context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 20);
         }
         // ammo
         if (this.game.player.powerUp) {
