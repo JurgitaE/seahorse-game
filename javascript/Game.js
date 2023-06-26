@@ -1,5 +1,5 @@
 import Background from './Background.js';
-import { Angler1, Angler2, LuckyFish } from './Enemy.js';
+import { Angler1, Angler2, HiveWhale, LuckyFish } from './Enemy.js';
 import InputHandler from './InputHandler.js';
 import Particle from './Particle.js';
 import Player from './Player.js';
@@ -28,7 +28,7 @@ class Game {
         this.gameTime = 0;
         this.timeLimit = 15000;
         this.debug = false;
-        // FYI djusted from 1 due to higher fps
+        // FYI adjusted from 1 due to higher fps
         this.speed = 0.3;
     }
     update(deltaTime) {
@@ -107,6 +107,8 @@ class Game {
             this.enemies.push(new Angler1(this));
         } else if (randomize < 0.6) {
             this.enemies.push(new Angler2(this));
+        } else if (randomize < 0.8) {
+            this.enemies.push(new HiveWhale(this));
         } else {
             this.enemies.push(new LuckyFish(this));
         }
