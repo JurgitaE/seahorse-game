@@ -6,6 +6,21 @@ window.addEventListener('load', function () {
     const ctx = canvas.getContext('2d');
     canvas.width = 1000;
     canvas.height = 500;
+    //implementing pause
+    let paused = false;
+    function togglePause() {
+        if (!paused) {
+            paused = true;
+        } else if (paused) {
+            paused = false;
+        }
+    }
+    window.addEventListener('keydown', function (e) {
+        let key = e.key;
+        if (key === 'p') {
+            togglePause();
+        }
+    });
 
     const game = new Game(canvas.width, canvas.height);
     let lastTime = 0;
@@ -15,7 +30,8 @@ window.addEventListener('load', function () {
         lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.draw(ctx);
-        game.update(deltaTime);
+        if (!paused) game.update(deltaTime);
+
         requestAnimationFrame(animate);
     }
     animate(0);
