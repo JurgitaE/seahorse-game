@@ -1,0 +1,50 @@
+class Particle {
+    constructor(game, x, y) {
+        this.game = game;
+        this.x = x;
+        this.y = y;
+        this.image = document.getElementById('gears');
+        this.frameX = Math.floor(Math.random() * 3);
+        this.frameY = Math.floor(Math.random() * 3);
+        this.spriteSize = 50;
+        this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1);
+        this.size = this.spriteSize * this.sizeModifier;
+        this.speedX = (Math.random() * 6 - 3) / 1.2; // FYI /1.2 adjustment for fps
+        this.speedY = (Math.random() * -15) / 1.5; // FYI 1.5 adjustment for fps
+        this.gravity = 0.25; // FYI adjusted for fps (original 0.5)
+        this.markedForDeletion = false;
+        this.angle = 0;
+        this.va = Math.random() * 0.2 - 0.1;
+        this.bounced = 0;
+        this.bottomBounceBoundary = Math.random() * 100 + 60;
+    }
+
+    update() {
+        this.angle += this.va;
+        this.speedY += this.gravity;
+        this.x -= this.speedX;
+        this.y += this.speedY;
+        if (this.y > this.game.height + this.size || this.x < 0 - this.size) {
+            this.markedForDeletion = true;
+        }
+        if (this.y > this.game.height - this.bottomBounceBoundary && this.bounced < 2) {
+            this.bounced++;
+            this.speedY *= -0.7; // FYI adjusted from -0.5
+        }
+    }
+    draw(context) {
+        context.drawImage(
+            this.image,
+            this.frameX * this.spriteSize,
+            this.frameY * this.spriteSize,
+            this.spriteSize,
+            this.spriteSize,
+            this.x,
+            this.y,
+            this.size,
+            this.size
+        );
+    }
+}
+
+export default Particle;

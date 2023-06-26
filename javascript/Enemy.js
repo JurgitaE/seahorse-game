@@ -40,8 +40,10 @@ class Enemy {
             this.width,
             this.height
         );
-        context.font = '20px Helvetica';
-        context.fillText(this.lives, this.x, this.y);
+        if (this.game.debug) {
+            context.font = '20px Helvetica';
+            context.fillText(this.lives, this.x, this.y);
+        }
     }
 }
 class Angler1 extends Enemy {

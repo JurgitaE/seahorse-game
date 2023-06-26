@@ -30,6 +30,12 @@ class Player {
             this.speedY = 0;
         }
         this.y += this.speedY;
+        // Vertical boundaries
+        if (this.y > this.game.height - this.height * 0.5) {
+            this.y = this.game.height - this.height * 0.5;
+        } else if (this.y < -this.height * 0.5) {
+            this.y = -this.height * 0.5;
+        }
         // handle Projectile
         this.projectiles.forEach(el => el.update());
         this.projectiles = this.projectiles.filter(el => !el.markedForDeletion);
