@@ -1,5 +1,5 @@
 import Background from './Background.js';
-import { Angler1, Angler2, LuckyFish } from './Enemy.js';
+import { Angler1, Angler2, Drone, HiveWhale, LuckyFish } from './Enemy.js';
 import InputHandler from './InputHandler.js';
 import Particle from './Particle.js';
 import Player from './Player.js';
@@ -28,7 +28,7 @@ class Game {
         this.gameTime = 0;
         this.timeLimit = 15000;
         this.debug = false;
-        // FYI djusted from 1 due to higher fps
+        // FYI adjusted from 1 due to higher fps
         this.speed = 0.3;
     }
     update(deltaTime) {
@@ -54,7 +54,7 @@ class Game {
             enemy.update();
             if (this.isColliding(this.player, enemy)) {
                 enemy.markedForDeletion = true;
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < enemy.score; i++) {
                     this.particles.push(new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
                 }
                 if (enemy.type === 'lucky') {
@@ -69,11 +69,23 @@ class Game {
                     projectile.markedForDeletion = true;
                     this.particles.push(new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
                     if (enemy.lives <= 0) {
-                        enemy.markedForDeletion = true;
-                        for (let i = 0; i < 10; i++) {
+                        for (let i = 0; i < enemy.score; i++) {
                             this.particles.push(
                                 new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5)
                             );
+                        }
+                        enemy.markedForDeletion = true;
+
+                        if (enemy.type === 'hive') {
+                            for (let i = 0; i < 5; i++) {
+                                this.enemies.push(
+                                    new Drone(
+                                        this,
+                                        enemy.x + Math.random() * enemy.width,
+                                        enemy.y + Math.random() * enemy.height
+                                    )
+                                );
+                            }
                         }
                         if (!this.gameOver) {
                             this.score += enemy.score;
@@ -107,6 +119,8 @@ class Game {
             this.enemies.push(new Angler1(this));
         } else if (randomize < 0.6) {
             this.enemies.push(new Angler2(this));
+        } else if (randomize < 0.8) {
+            this.enemies.push(new HiveWhale(this));
         } else {
             this.enemies.push(new LuckyFish(this));
         }
