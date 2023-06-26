@@ -110,7 +110,6 @@ class Game {
         } else {
             this.enemies.push(new LuckyFish(this));
         }
-        // console.log(this.enemies);
     }
     isColliding(rect1, rect2) {
         return (

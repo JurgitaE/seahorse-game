@@ -12,7 +12,6 @@ window.addEventListener('load', function () {
     // animation loop
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
-        // console.log(deltaTime);
         lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
