@@ -1,6 +1,7 @@
 import Background from './Background.js';
 import { Angler1, Angler2, LuckyFish } from './Enemy.js';
 import InputHandler from './InputHandler.js';
+import Particle from './Particle.js';
 import Player from './Player.js';
 import UI from './UI.js';
 
@@ -14,6 +15,7 @@ class Game {
         this.background = new Background(this);
         this.keys = [];
         this.enemies = [];
+        this.particles = [];
         this.enemyTimer = 0;
         this.enemyInterval = 1000;
         this.ammo = 20;
@@ -46,10 +48,15 @@ class Game {
         } else {
             this.ammoTimer += deltaTime;
         }
+        this.particles.forEach(particle => particle.update());
+        this.particles = this.particles.filter(particle => !particle.markedForDeletion);
         this.enemies.forEach(enemy => {
             enemy.update();
             if (this.isColliding(this.player, enemy)) {
                 enemy.markedForDeletion = true;
+                for (let i = 0; i < 10; i++) {
+                    this.particles.push(new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
+                }
                 if (enemy.type === 'lucky') {
                     this.player.enterPowerUp();
                 } else {
@@ -60,8 +67,14 @@ class Game {
                 if (this.isColliding(projectile, enemy)) {
                     enemy.lives--;
                     projectile.markedForDeletion = true;
+                    this.particles.push(new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
                     if (enemy.lives <= 0) {
                         enemy.markedForDeletion = true;
+                        for (let i = 0; i < 10; i++) {
+                            this.particles.push(
+                                new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5)
+                            );
+                        }
                         if (!this.gameOver) {
                             this.score += enemy.score;
                         }
@@ -83,6 +96,7 @@ class Game {
     draw(context) {
         this.background.draw(context);
         this.player.draw(context);
+        this.particles.forEach(particle => particle.draw(context));
         this.enemies.forEach(enemy => enemy.draw(context));
         this.background.layer4.draw(context);
         this.ui.draw(context);
