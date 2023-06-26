@@ -3,6 +3,11 @@ class Explosion {
         this.game = game;
         this.frameX = 0;
         this.spriteHeight = 200;
+        this.spriteWidth = 200;
+        this.width = this.spriteWidth;
+        this.height = this.spriteHeight;
+        this.x = x - this.width / 2;
+        this.y = y - this.height / 2;
         this.fps = 30;
         this.timer = 0;
         this.interval = 1000 / this.fps / 2; // FYI adjusted /2
@@ -39,15 +44,13 @@ class SmokeExplosion extends Explosion {
     constructor(game, x, y) {
         super(game, x, y);
         this.image = document.getElementById('smokeExplosion');
-        this.spriteWidth = 200;
-        this.width = this.spriteWidth;
-        this.height = this.spriteHeight;
-        this.x = x - this.width / 2;
-        this.y = y - this.height / 2;
     }
 }
 class FireExplosion extends Explosion {
-    constructor(game, x, y) {}
+    constructor(game, x, y) {
+        super(game, x, y);
+        this.image = document.getElementById('fireExplosion');
+    }
 }
 
 export { SmokeExplosion, FireExplosion };
