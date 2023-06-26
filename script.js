@@ -1,8 +1,11 @@
 import Game from './javascript/Game.js';
 
+const startBtn = document.getElementById('start');
+
 window.addEventListener('load', function () {
     // canvas setup
     const canvas = document.getElementById('canvas1');
+
     const ctx = canvas.getContext('2d');
     canvas.width = 1000;
     canvas.height = 500;
@@ -24,15 +27,21 @@ window.addEventListener('load', function () {
 
     const game = new Game(canvas.width, canvas.height);
     let lastTime = 0;
+    let startTime = 0;
     // animation loop
+
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.draw(ctx);
         if (!paused) game.update(deltaTime);
-
         requestAnimationFrame(animate);
     }
-    animate(0);
+    startBtn.addEventListener('click', () => {
+        document.getElementById('info').style.display = 'none';
+        lastTime = this.performance.now();
+
+        animate(0);
+    });
 });
