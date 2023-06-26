@@ -2,7 +2,7 @@ class Enemy {
     constructor(game) {
         this.game = game;
         this.x = this.game.width;
-        this.speedX = Math.random() * -0.5 - 0.5; //adjusted from * -1.5
+        this.speedX = (Math.random() * -1.5 - 0.5) / 3; // FYI adjusted /3
         this.markedForDeletion = false;
         this.lives = 5;
         this.score = this.lives;
@@ -93,9 +93,25 @@ class HiveWhale extends Enemy {
         this.frameY = 0;
         this.lives = 15;
         this.score = this.lives;
-        this.type = 'hivewhale';
-        this.speedX = Math.random() * -1.2 - 0.2;
+        this.type = 'hive';
+        this.speedX = (Math.random() * -1.2 - 0.2) / 3; // FYI adjusted /3
+    }
+}
+class Drone extends Enemy {
+    constructor(game, x, y) {
+        super(game);
+
+        this.width = 115;
+        this.height = 95;
+        this.x = x;
+        this.y = y;
+        this.image = document.getElementById('drone');
+        this.frameY = Math.floor(Math.random() * 2);
+        this.lives = 3;
+        this.score = this.lives;
+        this.type = 'drone';
+        this.speedX = (Math.random() * -4.2 - 0.5) / 3; // FYI adjusted /3
     }
 }
 
-export { Enemy, Angler1, Angler2, LuckyFish, HiveWhale };
+export { Enemy, Angler1, Angler2, LuckyFish, HiveWhale, Drone };
