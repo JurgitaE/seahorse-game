@@ -1,6 +1,6 @@
 import Background from './Background.js';
 import { Angler1, Angler2, Drone, HiveWhale, LuckyFish } from './Enemy.js';
-import { SmokeExplosion } from './Explosion.js';
+import { FireExplosion, SmokeExplosion } from './Explosion.js';
 import InputHandler from './InputHandler.js';
 import Particle from './Particle.js';
 import Player from './Player.js';
@@ -19,16 +19,16 @@ class Game {
         this.particles = [];
         this.explosions = [];
         this.enemyTimer = 0;
-        this.enemyInterval = 1000;
+        this.enemyInterval = 2000;
         this.ammo = 20;
         this.maxAmmo = 50;
         this.ammoTimer = 0;
-        this.ammoInterval = 500;
+        this.ammoInterval = 350;
         this.gameOver = false;
         this.score = 0;
-        this.winningScore = 10;
+        this.winningScore = 80;
         this.gameTime = 0;
-        this.timeLimit = 15000;
+        this.timeLimit = 30000;
         this.debug = false;
         // FYI adjusted from 1 due to higher fps
         this.speed = 0.3;
@@ -67,7 +67,7 @@ class Game {
                 if (enemy.type === 'lucky') {
                     this.player.enterPowerUp();
                 } else {
-                    this.score--;
+                    if (!this.gameOver) this.score--;
                 }
             }
             this.player.projectiles.forEach(projectile => {
@@ -98,9 +98,9 @@ class Game {
                         if (!this.gameOver) {
                             this.score += enemy.score;
                         }
-                        if (this.score > this.winningScore) {
+                        /*    if (this.score > this.winningScore) {
                             this.gameOver = true;
-                        }
+                        } */
                     }
                 }
             });
@@ -128,7 +128,7 @@ class Game {
             this.enemies.push(new Angler1(this));
         } else if (randomize < 0.6) {
             this.enemies.push(new Angler2(this));
-        } else if (randomize < 0.8) {
+        } else if (randomize < 0.7) {
             this.enemies.push(new HiveWhale(this));
         } else {
             this.enemies.push(new LuckyFish(this));
@@ -136,8 +136,10 @@ class Game {
     }
     addExplosion(enemy) {
         const randomize = Math.random();
-        if (randomize < 1) {
+        if (randomize < 0.5) {
             this.explosions.push(new SmokeExplosion(this, enemy.x + enemy.width / 2, enemy.y + enemy.height / 2));
+        } else {
+            this.explosions.push(new FireExplosion(this, enemy.x + enemy.width / 2, enemy.y + enemy.height / 2));
         }
     }
     isColliding(rect1, rect2) {
