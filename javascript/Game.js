@@ -1,5 +1,6 @@
 import Background from './Background.js';
 import { Angler1, Angler2, Drone, HiveWhale, LuckyFish } from './Enemy.js';
+import { SmokeExplosion } from './Explosion.js';
 import InputHandler from './InputHandler.js';
 import Particle from './Particle.js';
 import Player from './Player.js';
@@ -16,6 +17,7 @@ class Game {
         this.keys = [];
         this.enemies = [];
         this.particles = [];
+        this.explosions = [];
         this.enemyTimer = 0;
         this.enemyInterval = 1000;
         this.ammo = 20;
@@ -50,10 +52,15 @@ class Game {
         }
         this.particles.forEach(particle => particle.update());
         this.particles = this.particles.filter(particle => !particle.markedForDeletion);
+
+        this.explosions.forEach(explosion => explosion.update(deltaTime));
+        this.explosions = this.explosions.filter(explosion => !explosion.markedForDeletion);
+
         this.enemies.forEach(enemy => {
             enemy.update();
             if (this.isColliding(this.player, enemy)) {
                 enemy.markedForDeletion = true;
+                this.addExplosion(enemy);
                 for (let i = 0; i < enemy.score; i++) {
                     this.particles.push(new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
                 }
@@ -75,6 +82,7 @@ class Game {
                             );
                         }
                         enemy.markedForDeletion = true;
+                        this.addExplosion(enemy);
 
                         if (enemy.type === 'hive') {
                             for (let i = 0; i < 5; i++) {
@@ -110,6 +118,7 @@ class Game {
         this.player.draw(context);
         this.particles.forEach(particle => particle.draw(context));
         this.enemies.forEach(enemy => enemy.draw(context));
+        this.explosions.forEach(explosion => explosion.draw(context));
         this.background.layer4.draw(context);
         this.ui.draw(context);
     }
@@ -123,6 +132,12 @@ class Game {
             this.enemies.push(new HiveWhale(this));
         } else {
             this.enemies.push(new LuckyFish(this));
+        }
+    }
+    addExplosion(enemy) {
+        const randomize = Math.random();
+        if (randomize < 1) {
+            this.explosions.push(new SmokeExplosion(this, enemy.x + enemy.width / 2, enemy.y + enemy.height / 2));
         }
     }
     isColliding(rect1, rect2) {
