@@ -3,4 +3,5 @@ Changes and input to the project:
 
 -   instead of all code being in one js file - all classes were made as separate modules.
 -   implemented game pause logic ('p' keypress);
--   minor adjustments to game speed.
+-   minor adjustments to game speed;
+-   initial menu with start button.

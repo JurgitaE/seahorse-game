@@ -50,7 +50,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-image: url('./resources/menu-background.jpg');
+    background-size: cover;
 }
 #info h1 {
     font-family: 'Bangers', cursive;
